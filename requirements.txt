@@ -1,16 +1,18 @@
 # OpenCV for computer vision tasks
 opencv-python==4.8.0.74
 
-# For chatbot functionalities
-Flask==2.3.3
+Flask==2.1.2
+gunicorn==20.1.0
+opencv-python==4.6.0.66
+transformers==4.11.0
+spacy==3.5.0
+numpy==1.23.5
 
 
-numpy==1.23.4
+
+
 scikit-learn==1.2.2
 
-# NLP and language processing
-spacy==3.5.0
-transformers==4.11.0
 
 
 # For image manipulation and processing
@@ -22,3 +24,6 @@ torch==1.13.1
 
 # HTTP requests to call external APIs
 requests==2.28.1
+
+
+
