@@ -1,0 +1,13 @@
+[build]
+  # If you're using Flask, use this command to install dependencies and run the app
+  command = "pip install -r requirements.txt && gunicorn app:app"
+  # Point to the build folder (if using static frontend)
+  publish = "template"
+
+[functions]
+  directory = "functions"  # (Optional) If you're using serverless functions, put them here
+
+[build.environment]
+  PYTHON_VERSION = "3.8"  # or another version depending on your needs
+
+
