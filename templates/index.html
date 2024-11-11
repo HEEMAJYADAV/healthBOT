@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot & Video Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 900px;
+            gap: 20px;
+        }
+        .video-feed, .chat-container {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #video {
+            width: 100%;
+            border-radius: 8px;
+            background-color: black;
+        }
+        .chat-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .chat-message {
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .user-message {
+            background-color: #c8e6c9;
+            align-self: flex-end;
+        }
+        .bot-message {
+            background-color: #f8bbd0;
+            align-self: flex-start;
+        }
+        .input-container {
+            display: flex;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .input-container button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Video Feed Section -->
+        <div class="video-feed">
+            <h3>Facial Emotion Analysis</h3>
+            <img id="video" src="/video_feed" alt="Video feed">
+        </div>
+        
+        <!-- Chatbot Section -->
+        <div class="chat-container">
+            <h3>Chatbot</h3>
+            <div id="chat-log"></div>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Type a message..." autocomplete="off">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("user-input");
+            const message = userInput.value;
+            if (message.trim() === "") return;
+            
+            // Display user message
+            const chatLog = document.getElementById("chat-log");
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.className = "chat-message user-message";
+            userMessageDiv.textContent = message;
+            chatLog.appendChild(userMessageDiv);
+            
+            // Send message to the server
+            fetch("/chatbot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const botMessageDiv = document.createElement("div");
+                botMessageDiv.className = "chat-message bot-message";
+                botMessageDiv.innerHTML = data.reply;
+                chatLog.appendChild(botMessageDiv);
+                
+                chatLog.scrollTop = chatLog.scrollHeight;
+                userInput.value = "";
+            });
+        }
+    </script>
+</body>
+</html>
